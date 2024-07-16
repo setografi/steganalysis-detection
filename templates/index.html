@@ -8,7 +8,10 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <link href="/static/style.css" rel="stylesheet" />
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
   </head>
   <body class="bg-gray-200 h-screen flex flex-col justify-center items-center">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -16,7 +19,7 @@
         Steganalysis Detection
       </h1>
       <form
-        action="/"
+        action="{{ url_for('upload_file') }}"
         method="post"
         enctype="multipart/form-data"
         class="flex flex-col items-center justify-center space-y-4"
@@ -44,10 +47,17 @@
         {% elif message == 'Stego Image Detected' %}
         <p class="text-xl font-semibold text-red-500">Citra Stego</p>
         {% else %}
-        <p class="text-xl font-semibold text-gray-500">Hasil tidak diketahui</p>
+        <p class="text-xl font-semibold text-gray-500">{{ message }}</p>
         {% endif %}
       </div>
       {% endif %}
+      <div class="mt-4 text-center">
+        <a
+          href="{{ url_for('train') }}"
+          class="text-blue-500 hover:text-blue-600"
+          >Train Model</a
+        >
+      </div>
     </div>
   </body>
 </html>

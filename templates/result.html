@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganalysis Result</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-200 h-screen flex flex-col justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h1 class="text-3xl font-semibold mb-4 text-center">
+        Steganalysis Result
+      </h1>
+      <p class="text-lg font-medium text-center mb-4">
+        Prediction: {% if message == 'Normal Image' %}
+        <span class="text-green-500">Citra Asli</span>
+        {% elif message == 'Stego Image Detected' %}
+        <span class="text-red-500">Citra Stego</span>
+        {% else %}
+        <span class="text-gray-500">{{ message }}</span>
+        {% endif %}
+      </p>
+      <p class="text-center mb-4">Is this correct?</p>
+      <form
+        action="{{ url_for('confirm_result') }}"
+        method="post"
+        class="flex justify-center space-x-4"
+      >
+        <input type="hidden" name="filename" value="{{ filename }}" />
+        <input type="hidden" name="prediction" value="{{ message }}" />
+        <button
+          type="submit"
+          name="is_correct"
+          value="yes"
+          class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+        >
+          Yes
+        </button>
+        <button
+          type="submit"
+          name="is_correct"
+          value="no"
+          class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
+        >
+          No
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
