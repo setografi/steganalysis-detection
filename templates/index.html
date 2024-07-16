@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steganalysis Detection</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link href="/static/style.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-200 h-screen flex flex-col justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h1 class="text-3xl font-semibold mb-4 text-center">
+        Steganalysis Detection
+      </h1>
+      <form
+        action="/"
+        method="post"
+        enctype="multipart/form-data"
+        class="flex flex-col items-center justify-center space-y-4"
+      >
+        <label for="file" class="text-lg font-medium">Upload Image:</label>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          accept=".png, .jpg, .jpeg, .gif"
+          class="p-2 border border-gray-300 rounded-lg w-full"
+        />
+        <button
+          type="submit"
+          class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+        >
+          Detect Steganography
+        </button>
+      </form>
+      {% if message %}
+      <div class="mt-4 text-center">
+        <p class="text-lg font-medium">Detection Result:</p>
+        {% if message == 'Normal Image' %}
+        <p class="text-xl font-semibold text-green-500">Citra Asli</p>
+        {% elif message == 'Stego Image Detected' %}
+        <p class="text-xl font-semibold text-red-500">Citra Stego</p>
+        {% else %}
+        <p class="text-xl font-semibold text-gray-500">Hasil tidak diketahui</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
