@@ -9,7 +9,7 @@
       rel="stylesheet"
     />
     <link
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{ url_for('static', filename='style.css') }}"
       rel="stylesheet"
     />
   </head>
@@ -18,39 +18,49 @@
       <h1 class="text-3xl font-semibold mb-4 text-center">
         Steganalysis Result
       </h1>
-      <p class="text-lg font-medium text-center mb-4">
-        Prediction: {% if message == 'Normal Image' %}
-        <span class="text-green-500">Citra Asli</span>
-        {% elif message == 'Stego Image Detected' %}
-        <span class="text-red-500">Citra Stego</span>
-        {% else %}
-        <span class="text-gray-500">{{ message }}</span>
-        {% endif %}
+      <p class="text-lg font-medium text-center mb-2">
+        Initial Detection:
+        <span
+          class="{% if initial_prediction == 'Normal Image' %}text-green-500{% else %}text-red-500{% endif %}"
+          >{{ initial_prediction }}</span
+        >
       </p>
-      <p class="text-center mb-4">Is this correct?</p>
+      <p class="text-lg font-medium text-center mb-4">
+        ML Prediction:
+        <span
+          class="{% if ml_prediction == 'Normal Image' %}text-green-500{% elif ml_prediction == 'Stego Image Detected' %}text-red-500{% else %}text-gray-500{% endif %}"
+          >{{ ml_prediction }}</span
+        >
+      </p>
       <form
         action="{{ url_for('confirm_result') }}"
         method="post"
-        class="flex justify-center space-x-4"
+        class="flex flex-col items-center space-y-4"
       >
         <input type="hidden" name="filename" value="{{ filename }}" />
-        <input type="hidden" name="prediction" value="{{ message }}" />
-        <button
-          type="submit"
-          name="is_correct"
-          value="yes"
-          class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
-        >
-          Yes
-        </button>
-        <button
-          type="submit"
-          name="is_correct"
-          value="no"
-          class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300"
-        >
-          No
-        </button>
+        <input
+          type="hidden"
+          name="prediction"
+          value="{{ initial_prediction }}"
+        />
+        <div class="flex space-x-4">
+          <button
+            type="submit"
+            name="image_type"
+            value="normal"
+            class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            Save as Normal
+          </button>
+          <button
+            type="submit"
+            name="image_type"
+            value="stego"
+            class="bg-purple-500 text-white py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300"
+          >
+            Save as Stego
+          </button>
+        </div>
       </form>
     </div>
   </body>

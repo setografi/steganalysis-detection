@@ -3,18 +3,26 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
 import os
+import numpy as np
 
 def train_model(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
+    if len(X) < 2:
+        print("Not enough samples to train the model. At least 2 samples are required.")
+        return None, None
+
     scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+    X_scaled = scaler.fit_transform(X)
     
-    model = SVC(kernel='rbf', C=1.0)
-    model.fit(X_train_scaled, y_train)
+    if len(X) < 5:  # If we have very few samples, don't split the data
+        model = SVC(kernel='rbf', C=1.0)
+        model.fit(X_scaled, y)
+        accuracy = model.score(X_scaled, y)
+    else:
+        X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+        model = SVC(kernel='rbf', C=1.0)
+        model.fit(X_train, y_train)
+        accuracy = model.score(X_test, y_test)
     
-    accuracy = model.score(X_test_scaled, y_test)
     print(f"Model accuracy: {accuracy}")
     
     return model, scaler
